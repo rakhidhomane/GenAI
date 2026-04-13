@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-This security review identified **10 critical vulnerabilities** across multiple OWASP Top 10 categories in the Node.js application. The application contains deliberately insecure code patterns that expose it to severe security risks including SQL injection, broken access control, hardcoded credentials, and SSRF attacks.
+This security review identified **14 security vulnerabilities** (7 Critical, 5 High, 2 Medium) across multiple OWASP Top 10 categories in the Node.js application. The application contains deliberately insecure code patterns that expose it to severe security risks including SQL injection, broken access control, hardcoded credentials, and SSRF attacks.
 
 **Overall Risk Level:** 🔴 **CRITICAL**
 
