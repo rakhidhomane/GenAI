@@ -250,24 +250,28 @@ app.post("/login", (req, res) => {
   }
 
   // Parameterized query - the '?' placeholders prevent SQL injection
-  const query = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
+  const query = "SELECT * FROM users WHERE username = ?";
   
-  // Hash the password before comparing (see A04 remediation)
-  const passwordHash = await bcrypt.hash(password, 10);
-  
-  db.query(query, [username, passwordHash], (err, results) => {
+  db.query(query, [username], async (err, results) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ message: "Internal server error" });
     }
 
     if (results.length > 0) {
-      const token = jwt.sign(
-        { userId: results[0].id, username: username },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      );
-      res.json({ message: "Login successful", token });
+      // Use bcrypt.compare to verify the password against the stored hash
+      const isMatch = await bcrypt.compare(password, results[0].password_hash);
+      
+      if (isMatch) {
+        const token = jwt.sign(
+          { userId: results[0].id, username: username },
+          process.env.JWT_SECRET,
+          { expiresIn: '1h' }
+        );
+        res.json({ message: "Login successful", token });
+      } else {
+        res.status(401).json({ message: "Invalid credentials" });
+      }
     } else {
       res.status(401).json({ message: "Invalid credentials" });
     }
@@ -550,7 +554,7 @@ The application uses outdated package versions that may contain known vulnerabil
 
 **Known Issues:**
 - `express@4.17.1` - Released January 2020, multiple security updates since
-- `jsonwebtoken@8.5.1` - Has known vulnerabilities (CVE-2022-23529, CVE-2022-23539, CVE-2022-23540, CVE-2022-23541)
+- `jsonwebtoken@8.5.1` - Has known vulnerabilities related to algorithm confusion and signature validation (see npm security advisories)
 - `mysql@2.18.1` - Consider using `mysql2` with better prepared statement support
 
 **Remediation Steps:**
