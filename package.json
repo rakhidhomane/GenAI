@@ -1,0 +1,15 @@
+{
+  "name": "owasp-security-poc",
+  "version": "1.0.0",
+  "description": "Deliberately vulnerable application for OWASP Top 10 testing",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "4.17.1",
+    "mysql": "2.18.1",
+    "body-parser": "1.19.0",
+    "jsonwebtoken": "8.5.1"
+  }
+}
