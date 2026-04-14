@@ -1,0 +1,19 @@
+{
+  "name": "My GitHub MCP Project",
+  "description": "POC using GitHub MCP extension",
+  "version": "1.0.0",
+  "provider": {
+    "type": "github",
+    "repository": "ALMCybage/26074_RakhiGithubCopilot",
+    "branch": "main"
+  },
+  "entryPoint": "src/index.js",
+  "commands": [
+    {
+      "name": "runWorkflow",
+      "description": "Trigger a GitHub Actions workflow",
+      "handler": "src/commands/runWorkflow.js"
+    }
+  ],
+  "settings": {}
+}
